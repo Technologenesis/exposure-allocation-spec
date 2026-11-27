@@ -1,0 +1,39 @@
+{
+ "title": "Tells ranked balancing apart from weighted balancing.",
+ "ctor": "",
+ "fields": {
+  "lineCount": "2",
+  "typeCount": "2",
+  "assetCount": "5",
+  "pool": "120",
+  "limit": "fun _ => 120",
+  "cost": "fun i => [60, 60, 10, 30, 20].getD i.val 0",
+  "assetType": "fun i => if [0, 1, 0, 1, 1].getD i.val 0 = 0 then 0 else 1",
+  "lineRatio": "fun i => [2500, 7500].getD i.val 0",
+  "typeRatio": "fun i => [5000, 5000].getD i.val 0",
+  "typeTolerance": "6000",
+  "lineTolerance": "6000"
+ },
+ "show": [
+  {
+   "label": "what each credit line spends (they wanted 30 and 90)",
+   "expr": "(List.finRange input.lineCount).map fun l => lineSpend out l"
+  },
+  {
+   "label": "what each asset type received (they wanted 60 and 60)",
+   "expr": "(List.finRange input.typeCount).map fun t => typeTotal out t"
+  },
+  {
+   "label": "capital deployed",
+   "expr": "deployed out"
+  },
+  {
+   "label": "asset-type imbalance",
+   "expr": "typeImbalance out"
+  },
+  {
+   "label": "credit-line imbalance",
+   "expr": "lineImbalance out"
+  }
+ ]
+}

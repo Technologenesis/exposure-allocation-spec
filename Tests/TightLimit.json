@@ -1,0 +1,27 @@
+{
+ "title": "A credit line's hard limit binds, not the pool.",
+ "ctor": "",
+ "fields": {
+  "lineCount": "2",
+  "typeCount": "2",
+  "assetCount": "4",
+  "pool": "500",
+  "limit": "fun i => [40, 30].getD i.val 0",
+  "cost": "fun i => [40, 30, 25, 25].getD i.val 0",
+  "assetType": "fun i => if [0, 1, 0, 1].getD i.val 0 = 0 then 0 else 1",
+  "lineRatio": "fun i => [5000, 5000].getD i.val 0",
+  "typeRatio": "fun i => [5000, 5000].getD i.val 0",
+  "typeTolerance": "4000",
+  "lineTolerance": "4000"
+ },
+ "show": [
+  {
+   "label": "what each credit line spends (limits are 40 and 30)",
+   "expr": "(List.finRange input.lineCount).map fun l => lineSpend out l"
+  },
+  {
+   "label": "capital deployed",
+   "expr": "deployed out"
+  }
+ ]
+}

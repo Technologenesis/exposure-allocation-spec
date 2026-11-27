@@ -1,0 +1,27 @@
+{
+ "title": "One credit line, two asset types, everything affordable.",
+ "ctor": "",
+ "fields": {
+  "lineCount": "1",
+  "typeCount": "2",
+  "assetCount": "4",
+  "pool": "100",
+  "limit": "fun _ => 100",
+  "cost": "fun i => [30, 20, 25, 25].getD i.val 0",
+  "assetType": "fun i => if [0, 0, 1, 1].getD i.val 0 = 0 then 0 else 1",
+  "lineRatio": "fun _ => 10000",
+  "typeRatio": "fun i => [5000, 5000].getD i.val 0",
+  "typeTolerance": "1000",
+  "lineTolerance": "10000"
+ },
+ "show": [
+  {
+   "label": "capital deployed",
+   "expr": "deployed out"
+  },
+  {
+   "label": "what each asset type received",
+   "expr": "(List.finRange input.typeCount).map fun t => typeTotal out t"
+  }
+ ]
+}
