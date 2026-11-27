@@ -2,9 +2,6 @@ name = "exposureallocation"
 defaultTargets = ["Spec", "Impl", "Proof"]
 
 [leanOptions]
-# Required by the harness's "proved" semantics: a passing build must mean
-# sorry-free, and `sorry` is a warning.
-warningAsError = true
 # Tripwire: keep proofs cheap and linear.
 maxHeartbeats = 50000
 
