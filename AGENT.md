@@ -29,7 +29,7 @@ A fresh project looks like this:
 
 ```
 myspec/
-  lakefile.toml        -- three libs; warningAsError on
+  lakefile.toml        -- three libs
   lean-toolchain       -- pinned, e.g. leanprover/lean4:v4.29.1
   Spec.lean            -- the ROOT FILE: imports + package summary
   Spec/                -- the contract: what the page shows
@@ -50,8 +50,6 @@ name = "myspec"
 defaultTargets = ["Spec", "Impl", "Proof"]
 
 [leanOptions]
-warningAsError = true   # REQUIRED by the harness's "proved" semantics: a passing
-                        # build must mean sorry-free, and sorry is a warning
 maxHeartbeats = 50000   # optional tripwire: keep proofs cheap and linear
 
 [[lean_lib]]
@@ -122,14 +120,19 @@ to its definition automatically.
 
 The header badges and per-clause badges are observed, never written:
 
-- **build passing / failing** — `lake build` under the repo's own flags. With
-  `warningAsError` on, a passing build is also machine-checked sorry-free.
-- **A clause is `proved`** when (a) a **sorry-free declaration outside the spec's
-  pages** — i.e. in `Proof/` or `Impl/` — **names it** (the coverage scan is
-  textual: state one theorem per clause, named for it, e.g.
-  `theorem decide_riskOff : ∀ i, RiskOffIsImmediate i (decide i) := …`), and
-  (b) the build passes. A declaration containing `sorry`/`admit` is no proof;
-  such a clause is simply `unproved`. `unverified` means the build was skipped.
+- **build passing / failing** — `lake build` under the repo's own flags (a
+  `sorry` is only a warning, so a sorried work-in-progress still builds and the
+  page stays informative).
+- **A clause is `proved`** when (a) a declaration **outside the spec's pages** —
+  i.e. in `Proof/` or `Impl/` — **names it** (the coverage scan is textual:
+  state one theorem per clause, named for it, e.g.
+  `theorem decide_riskOff : ∀ i, RiskOffIsImmediate i (decide i) := …`),
+  (b) the build passes, and (c) that declaration is free of sorry-taint.
+  Taint is transitive: a declaration containing `sorry`/`admit` is tainted, and
+  so is anything that names a tainted declaration. A clause covered only by
+  tainted obligations shows **`proved with sorry`** — progress made visible,
+  never counted as proved. `unproved` covers the rest (no obligation, or a
+  failing build); `unverified` means the build was skipped.
 - The server rebuilds the page on every save: instantly with `verifying…` badges,
   then again when its background `lake build` settles them.
 
@@ -234,4 +237,8 @@ of the section that declaration lands in. A module doc anywhere else is an error
   history and diffs. Git writes — branching, committing, pushing, opening PRs,
   creating repos — are the developer's acts, through the git controls on the
   panel. At a good stopping point, suggest a commit in one line; never attempt one.
+- A branch protected on GitHub (pull requests required to merge into it) is
+  read-only in the harness: every file write is denied while the session sits on
+  it. Ask the developer to create a working branch from the panel and continue
+  there.
 - `spec.html` is a build product. Never edit it; never commit status text anywhere.
