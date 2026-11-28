@@ -1,5 +1,4 @@
 import Spec.Inputs
-import Spec.Cost
 import Spec.Vocabulary
 import Spec.Clauses
 import Spec.Contract
