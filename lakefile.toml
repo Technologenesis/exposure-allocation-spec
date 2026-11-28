@@ -13,8 +13,3 @@ name = "Impl"
 
 [[lean_lib]]
 name = "Proof"
-
-[[require]]
-name = "cslib"
-scope = "leanprover"
-rev = "main"
